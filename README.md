@@ -1,26 +1,57 @@
-# haskell-library-template
+# Asana
 
-Haskell library template used at Freckle.
+Haskell client for the Asana API.
 
-## Create your repo
+## API Key
 
-```sh
-gh repo create --template freckle/haskell-library-template
+1. Visit *Settings > Apps > Developer apps*, create a Personal Access Token
+
+## Simple Usage
+
+For example, to make a quick script to list all incomplete tasks in a project:
+
+```hs
+import Asana.Api.Request
+import Asana.Api.Task
+import Data.Text (pack)
+import System.Environment (getEnv)
+import Control.Monad.Logger (runStdoutLoggingT)
+import Control.Monad.Reader (runReaderT)
+
+main :: IO ()
+main = do
+  key <- AsanaAccessKey . pack <$> getEnv "ASANA_ACCESS_KEY"
+
+  runStdoutLoggingT $ flip runReaderT key $ do
+    let projectId = "..."
+    tasks <- getProjectTasks projectId IncompletedTasks
+    print tasks
 ```
 
-## Rename your package
+## Advanced Usage
 
-```sh
-sed -i s/haskell-library-template/my-name/ **/*
-```
+This library implements the `Has`-class pattern for use in a `ReaderT`-style
+application.
 
-## Enable release
+```hs
+data App = App
+  { -- ...
+  , appAsanaAccessKey :: ApiKey
+  }
 
-When you are ready to release your library, simply remove the conditional from
-the release workflow.
+instance HasAsanaAccessKey App where
+  asanaAccessKeyL = lens appAsanaAccessKey $ \x y -> x { appAsanaAccessKey = y }
 
-```diff
---      - if: false # Remove when ready to release
+loadApp :: IO App
+loadApp = undefined
+
+main :: IO ()
+main = do
+  app <- loadApp
+  runStdoutLoggingT $ runReaderT run app
+
+run :: (MonadLogger m, MonadReader env m, HasAsanaAccessKey env) => m ()
+run = undefined
 ```
 
 ---
