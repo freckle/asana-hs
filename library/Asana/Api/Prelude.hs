@@ -20,5 +20,3 @@ import Lens.Micro as X (Lens', lens)
 import Lens.Micro.Mtl as X (view)
 import Text.Read as X (readMaybe)
 import UnliftIO.Exception as X (Exception(..), catch, throwIO)
-
-{-# ANN module ("HLint: avoid restricted qualification" :: String) #-}
