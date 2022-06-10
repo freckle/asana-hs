@@ -160,7 +160,7 @@ get path params limit mOffset = do
         <> concatMap (\(k, v) -> "&" <> k <> "=" <> v) params
   response <- retry 50 $ httpJSON (addAuthorization key request)
   when (300 <= getResponseStatusCode response)
-    $ logWarn
+    $ logWarnNS "Asana"
     $ "GET failed, status: "
     <> pack (show $ getResponseStatusCode response)
   pure $ getResponseBody response
@@ -209,7 +209,7 @@ httpAction verb path payload = do
       key
       request
     )
-  when (300 <= getResponseStatusCode response) $ logWarn $ mconcat
+  when (300 <= getResponseStatusCode response) $ logWarnNS "Asana" $ mconcat
     [ "Request failed"
     , "\n  method: " <> T.decodeUtf8 verb
     , "\n  status: " <> pack (show $ getResponseStatusCode response)
@@ -242,7 +242,7 @@ retry attempt go
   orThrow e response
     | getResponseStatusCode response == 429 = do
       let seconds = getResponseDelay response
-      logWarn $ "Retrying after " <> pack (show seconds) <> " seconds"
+      logWarnNS "Asana" $ "Retrying after " <> pack (show seconds) <> " seconds"
       threadDelay $ seconds * 1000000
       retry (pred attempt) go
     | otherwise = liftIO $ throwIO e
@@ -251,7 +251,7 @@ retry attempt go
   handler response
     | getResponseStatusCode response == 429 = do
       let seconds = getResponseDelay response
-      logWarn $ "Retrying after " <> pack (show seconds) <> " seconds"
+      logWarnNS "Asana" $ "Retrying after " <> pack (show seconds) <> " seconds"
       threadDelay $ seconds * 100000
       retry (pred attempt) go
     | otherwise = pure response
