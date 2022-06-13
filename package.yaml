@@ -79,7 +79,6 @@ library:
     - unliftio
     - unliftio-core
     - unordered-containers
-
 # tests:
 #   spec:
 #     main: Spec.hs
