@@ -20,6 +20,7 @@ import Asana.Api.CustomField
 import Asana.Api.Gid
 import Asana.Api.Named
 import Asana.Api.Request
+import Asana.Api.Tag
 import Data.Aeson
 import Data.Aeson.Casing (aesonPrefix, snakeCase)
 import Data.HashMap.Strict (HashMap)
@@ -55,6 +56,7 @@ data Task = Task
   , tResourceSubtype :: ResourceSubtype
   , tNotes :: Text
   , tProjects :: [AsanaReference]
+  , tTags :: [Tag]
   }
   deriving stock (Eq, Generic, Show)
 

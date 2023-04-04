@@ -33,6 +33,7 @@ library
       Asana.Api.Prelude
       Asana.Api.Project
       Asana.Api.Request
+      Asana.Api.Tag
       Asana.Api.Task
       Asana.Api.Task.Search
   other-modules:
