@@ -8,6 +8,7 @@ module Asana.Api.Task
   , getProjectTasks
   , getProjectTasksCompletedSince
   , postTask
+  , addTag
   , putCompleted
   , taskUrl
   , extractNumberField
@@ -125,6 +126,15 @@ getProjectTasksCompletedSince
 getProjectTasksCompletedSince projectId since = getAllParams
   (T.unpack $ "/projects/" <> gidToText projectId <> "/tasks")
   [("completed_since", formatISO8601 since)]
+
+addTag
+  :: (MonadUnliftIO m, MonadLogger m, MonadReader env m, HasAsanaAccessKey env)
+  => Gid
+  -> Gid -- ^ Tag
+  -> m ()
+addTag task tag =
+  void $ post ("/tasks/" <> T.unpack (gidToText task) <> "/addTag") $ ApiData
+    (object ["tag" .= tag])
 
 putCompleted
   :: (MonadUnliftIO m, MonadLogger m, MonadReader env m, HasAsanaAccessKey env)
