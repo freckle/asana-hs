@@ -1,17 +1,17 @@
 -- | Anything with a compact @{ id, name }@ representation
 module Asana.Api.Named
-  ( Named(..)
-  ) where
-
-import Asana.Api.Prelude
+  ( Named (..),
+  )
+where
 
 import Asana.Api.Gid (Gid)
+import Asana.Api.Prelude
 import Data.Aeson (FromJSON, genericParseJSON, parseJSON)
 import Data.Aeson.Casing (aesonPrefix, snakeCase)
 
 data Named = Named
-  { nGid :: Gid
-  , nName :: Text
+  { nGid :: Gid,
+    nName :: Text
   }
   deriving stock (Eq, Generic, Show)
 
