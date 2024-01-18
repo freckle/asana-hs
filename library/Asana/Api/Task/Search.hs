@@ -5,24 +5,24 @@ module Asana.Api.Task.Search
   )
 where
 
-import Asana.Api.Gid
-import Asana.Api.Named
-import Asana.Api.Prelude
-import Asana.Api.Request
-import Asana.Api.Task
-import Data.HashMap.Strict (HashMap)
+import           Asana.Api.Gid
+import           Asana.Api.Named
+import           Asana.Api.Prelude
+import           Asana.Api.Request
+import           Asana.Api.Task
+import           Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
-import Data.List (intercalate)
-import qualified Data.Text as T
+import           Data.List           (intercalate)
+import qualified Data.Text           as T
 
 data TaskTypeFilter = TasksOnly | SubtasksOnly | AllTaskTypes
 
 data SearchWorkspace = SearchWorkspace
-  { swWorkspaceId :: Gid,
-    swProjectIds :: [Gid],
+  { swWorkspaceId      :: Gid,
+    swProjectIds       :: [Gid],
     swTaskStatusFilter :: TaskStatusFilter,
-    swCustomFields :: HashMap Gid Text,
-    swTaskTypeFilter :: TaskTypeFilter
+    swCustomFields     :: HashMap Gid Text,
+    swTaskTypeFilter   :: TaskTypeFilter
   }
 
 -- | Search for tasks within a workspace
@@ -48,10 +48,10 @@ searchWorkspace SearchWorkspace {..} =
         $ HashMap.toList swCustomFields
 
     completed = case swTaskStatusFilter of
-      AllTasks -> []
+      AllTasks         -> []
       IncompletedTasks -> [("completed", "false")]
 
     isSubtask = case swTaskTypeFilter of
       AllTaskTypes -> []
-      TasksOnly -> [("is_subtask", "false")]
+      TasksOnly    -> [("is_subtask", "false")]
       SubtasksOnly -> [("is_subtask", "true")]

@@ -3,15 +3,15 @@ module Asana.Api.Project
   )
 where
 
-import Asana.Api.Gid (Gid)
-import Asana.Api.Prelude
-import Data.Aeson (FromJSON, genericParseJSON, parseJSON)
-import Data.Aeson.Casing (aesonPrefix, snakeCase)
-import Data.Time (UTCTime)
+import           Asana.Api.Gid     (Gid)
+import           Asana.Api.Prelude
+import           Data.Aeson        (FromJSON, genericParseJSON, parseJSON)
+import           Data.Aeson.Casing (aesonPrefix, snakeCase)
+import           Data.Time         (UTCTime)
 
 data Project = Project
-  { pGid :: Gid,
-    pName :: Text,
+  { pGid       :: Gid,
+    pName      :: Text,
     pCreatedAt :: UTCTime
   }
   deriving stock (Generic, Show)

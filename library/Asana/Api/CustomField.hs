@@ -8,15 +8,15 @@ module Asana.Api.CustomField
   )
 where
 
-import Asana.Api.Gid (Gid, gidToText)
-import Asana.Api.Prelude
-import Asana.Api.Request
-import Data.Aeson
-import Data.Aeson.Casing (aesonPrefix, snakeCase)
-import Data.List (find)
-import Data.Scientific (Scientific)
-import Data.String (fromString)
-import qualified Data.Text as T
+import           Asana.Api.Gid     (Gid, gidToText)
+import           Asana.Api.Prelude
+import           Asana.Api.Request
+import           Data.Aeson
+import           Data.Aeson.Casing (aesonPrefix, snakeCase)
+import           Data.List         (find)
+import           Data.Scientific   (Scientific)
+import           Data.String       (fromString)
+import qualified Data.Text         as T
 
 data CustomField
   = CustomNumber Gid Text (Maybe Scientific)
@@ -34,15 +34,15 @@ instance ToJSON CustomFields where
   toJSON (CustomFields fields) = object $ concatMap toPair fields
     where
       toPair = \case
-        CustomNumber gid _ n -> [gidToKey gid .= n]
+        CustomNumber gid _ n     -> [gidToKey gid .= n]
         e@(CustomEnum gid _ _ _) -> [gidToKey gid .= customEnumId e]
-        _ -> []
+        _                        -> []
 
       -- fromString will give us Text for aeson-1.x and Key for aeson-2.x
       gidToKey = fromString . T.unpack . gidToText
 
 data EnumOption = EnumOption
-  { eoGid :: Gid,
+  { eoGid  :: Gid,
     eoName :: Text
   }
   deriving stock (Eq, Generic, Show)
@@ -78,7 +78,7 @@ instance FromJSON CustomField where
           <*> (o .: "enum_options")
           <*> case value of
             Object vo -> vo .:? "name"
-            _ -> pure Nothing
+            _         -> pure Nothing
       _ -> pure Other
 
 putCustomField ::

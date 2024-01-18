@@ -4,13 +4,13 @@ module Asana.Api.Named
   )
 where
 
-import Asana.Api.Gid (Gid)
-import Asana.Api.Prelude
-import Data.Aeson (FromJSON, genericParseJSON, parseJSON)
-import Data.Aeson.Casing (aesonPrefix, snakeCase)
+import           Asana.Api.Gid     (Gid)
+import           Asana.Api.Prelude
+import           Data.Aeson        (FromJSON, genericParseJSON, parseJSON)
+import           Data.Aeson.Casing (aesonPrefix, snakeCase)
 
 data Named = Named
-  { nGid :: Gid,
+  { nGid  :: Gid,
     nName :: Text
   }
   deriving stock (Eq, Generic, Show)

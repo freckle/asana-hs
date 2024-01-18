@@ -3,13 +3,13 @@ module Asana.Api.Tag
   )
 where
 
-import Asana.Api.Gid
-import Asana.Api.Prelude
-import Data.Aeson
-import Data.Aeson.Casing (aesonPrefix, snakeCase)
+import           Asana.Api.Gid
+import           Asana.Api.Prelude
+import           Data.Aeson
+import           Data.Aeson.Casing (aesonPrefix, snakeCase)
 
 data Tag = Tag
-  { tGid :: Gid,
+  { tGid  :: Gid,
     tName :: Text
   }
   deriving stock (Eq, Generic, Show)

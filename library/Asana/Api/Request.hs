@@ -14,27 +14,20 @@ module Asana.Api.Request
   )
 where
 
-import Asana.Api.Prelude
-import Data.Aeson
-import Data.Aeson.Casing (aesonPrefix, snakeCase)
-import qualified Data.ByteString.Lazy as BSL
-import qualified Data.Text as T
-import qualified Data.Text.Encoding as T
+import           Asana.Api.Prelude
+import           Data.Aeson
+import           Data.Aeson.Casing        (aesonPrefix, snakeCase)
+import qualified Data.ByteString.Lazy     as BSL
+import qualified Data.Text                as T
+import qualified Data.Text.Encoding       as T
 import qualified Data.Text.Encoding.Error as T
-import Network.HTTP.Simple
-  ( JSONException (JSONConversionException, JSONParseException),
-    Request,
-    Response,
-    addRequestHeader,
-    getResponseBody,
-    getResponseHeader,
-    getResponseStatusCode,
-    httpJSON,
-    parseRequest_,
-    setRequestBodyJSON,
-    setRequestMethod,
-  )
-import UnliftIO.Concurrent (threadDelay)
+import           Network.HTTP.Simple      (JSONException (JSONConversionException, JSONParseException),
+                                           Request, Response, addRequestHeader,
+                                           getResponseBody, getResponseHeader,
+                                           getResponseStatusCode, httpJSON,
+                                           parseRequest_, setRequestBodyJSON,
+                                           setRequestMethod)
+import           UnliftIO.Concurrent      (threadDelay)
 
 newtype AsanaAccessKey = AsanaAccessKey
   { unAsanaAccessKey :: Text
@@ -61,7 +54,7 @@ instance (FromJSON a) => FromJSON (Single a) where
 
 -- | Type for a list-resource response, containing @{ data: [{ ... }] }@
 data Page a = Page
-  { pData :: [a],
+  { pData     :: [a],
     pNextPage :: Maybe NextPage
   }
   deriving stock (Eq, Generic, Show)
@@ -72,8 +65,8 @@ instance (FromJSON a) => FromJSON (Page a) where
 -- | The @next_page@ element of a paginated response
 data NextPage = NextPage
   { npOffset :: Text,
-    npPath :: Text,
-    npUri :: Text
+    npPath   :: Text,
+    npUri    :: Text
   }
   deriving stock (Eq, Generic, Show)
 
@@ -240,7 +233,7 @@ retry attempt go
   where
     handleParseError :: JSONException -> m (Response a)
     handleParseError e = case e of
-      JSONParseException _ rsp _ -> orThrow e rsp
+      JSONParseException _ rsp _      -> orThrow e rsp
       JSONConversionException _ rsp _ -> orThrow e rsp
 
     orThrow :: (Exception e) => e -> Response b -> m (Response a)

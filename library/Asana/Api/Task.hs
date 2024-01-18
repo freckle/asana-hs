@@ -16,18 +16,18 @@ module Asana.Api.Task
   )
 where
 
-import Asana.Api.CustomField
-import Asana.Api.Gid
-import Asana.Api.Named
-import Asana.Api.Prelude
-import Asana.Api.Request
-import Asana.Api.Tag
-import Data.Aeson
-import Data.Aeson.Casing (aesonPrefix, snakeCase)
-import Data.HashMap.Strict (HashMap)
-import qualified Data.Text as T
-import Data.Time (UTCTime, getCurrentTime)
-import Data.Time.ISO8601 (formatISO8601)
+import           Asana.Api.CustomField
+import           Asana.Api.Gid
+import           Asana.Api.Named
+import           Asana.Api.Prelude
+import           Asana.Api.Request
+import           Asana.Api.Tag
+import           Data.Aeson
+import           Data.Aeson.Casing     (aesonPrefix, snakeCase)
+import           Data.HashMap.Strict   (HashMap)
+import qualified Data.Text             as T
+import           Data.Time             (UTCTime, getCurrentTime)
+import           Data.Time.ISO8601     (formatISO8601)
 
 data Membership = Membership
   { mProject :: Named,
@@ -46,18 +46,18 @@ instance FromJSON ResourceSubtype where
     genericParseJSON $ defaultOptions {constructorTagModifier = snakeCase}
 
 data Task = Task
-  { tAssignee :: Maybe Named,
-    tName :: Text,
-    tCompleted :: Bool,
-    tCompletedAt :: Maybe UTCTime,
-    tCreatedAt :: UTCTime,
-    tCustomFields :: CustomFields,
-    tMemberships :: [Membership],
-    tGid :: Gid,
+  { tAssignee        :: Maybe Named,
+    tName            :: Text,
+    tCompleted       :: Bool,
+    tCompletedAt     :: Maybe UTCTime,
+    tCreatedAt       :: UTCTime,
+    tCustomFields    :: CustomFields,
+    tMemberships     :: [Membership],
+    tGid             :: Gid,
     tResourceSubtype :: ResourceSubtype,
-    tNotes :: Text,
-    tProjects :: [AsanaReference],
-    tTags :: [Tag]
+    tNotes           :: Text,
+    tProjects        :: [AsanaReference],
+    tTags            :: [Tag]
   }
   deriving stock (Eq, Generic, Show)
 
@@ -72,11 +72,11 @@ getTask ::
 getTask taskId = getSingle $ "/tasks/" <> T.unpack (gidToText taskId)
 
 data PostTask = PostTask
-  { ptProjects :: [Gid],
+  { ptProjects     :: [Gid],
     ptCustomFields :: HashMap Gid Text,
-    ptName :: Text,
-    ptNotes :: Text,
-    ptParent :: Maybe Gid
+    ptName         :: Text,
+    ptNotes        :: Text,
+    ptParent       :: Maybe Gid
   }
   deriving stock (Generic)
 
@@ -111,7 +111,7 @@ getProjectTasks projectId taskStatusFilter = do
     (completedSince now)
   where
     completedSince now = case taskStatusFilter of
-      AllTasks -> []
+      AllTasks         -> []
       IncompletedTasks -> [("completed_since", formatISO8601 now)]
 
 data TaskStatusFilter = IncompletedTasks | AllTasks
@@ -156,7 +156,7 @@ extractNumberField :: Text -> Task -> Maybe CustomField
 extractNumberField fieldName Task {..} =
   listToMaybe $ flip mapMaybe (getCustomFields tCustomFields) $ \case
     customField@(CustomNumber _ t _) -> customField <$ guard (t == fieldName)
-    _ -> Nothing
+    _                                -> Nothing
 
 extractEnumField :: Text -> Task -> Maybe CustomField
 extractEnumField fieldName Task {..} =
