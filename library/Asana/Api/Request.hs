@@ -50,6 +50,7 @@ maxRequests :: Int
 maxRequests = 50
 
 -- | Type for a single-resource response, containing @{ data: { ... } }@
+type role Single representational
 newtype Single a = Single
   { sData :: a
   }
@@ -60,6 +61,7 @@ instance (FromJSON a) => FromJSON (Single a) where
   parseJSON = genericParseJSON $ aesonPrefix snakeCase
 
 -- | Type for a list-resource response, containing @{ data: [{ ... }] }@
+type role Page representational
 data Page a = Page
   { pData :: [a],
     pNextPage :: Maybe NextPage
@@ -81,6 +83,7 @@ instance FromJSON NextPage where
   parseJSON = genericParseJSON $ aesonPrefix snakeCase
 
 -- | Generic type for un/wrapping an item as @{ data: <item> }@
+type role ApiData representational
 newtype ApiData a = ApiData
   { adData :: a
   }

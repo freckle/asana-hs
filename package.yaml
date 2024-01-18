@@ -55,6 +55,7 @@ default-extensions:
   - OverloadedStrings
   - RankNTypes
   - RecordWildCards
+  - RoleAnnotations
   - ScopedTypeVariables
   - StandaloneDeriving
   - TypeApplications
