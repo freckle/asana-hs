@@ -1,5 +1,8 @@
 # Asana
 
+> [!WARNING]
+> This repository is archived and no longer maintained.
+
 Haskell client for the Asana API.
 
 ## API Key
